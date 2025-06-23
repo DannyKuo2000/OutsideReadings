@@ -1,3 +1,5 @@
+# This a simulation program from "The Selfish Gene" Chap6
+# 模擬了四種爭搶地盤的行為模式： 0.鷹 1.鴿子 2.復仇者 3.欺負弱小者
 import random
 import numpy as np
 import matplotlib.pyplot as plt
@@ -67,8 +69,8 @@ class EvolutionSimulator:
             if min_fit < 0:
                 fitnesses = fitnesses - min_fit  # shift to make min = 0
 
-            # === 分布視覺化（每50代畫一次） ===
-            if gen % 5 == 0 or gen == self.generations - 1:
+            # === 分布視覺化（每幾代畫一次） ===
+            if gen % 5  == 0 or gen == self.generations - 1:
                 # 分箱（quantization）
                 num_bins = 20
                 bins = np.linspace(fitnesses.min(), fitnesses.max() + 1e-6, num_bins + 1)
@@ -189,8 +191,7 @@ sim.history.append(initial_distribution)
 sim.run()
 sim.plot()
 
-
-# ✅ 突變率（如每代 1% 改策略）
 # ✅ 複雜策略（像 Tit-for-Tat、報復者） 「報償者（retaliator）」、「騙子（cheater）」
 # ✅ 分組或空間分佈互動（只與鄰居互動）
 # ✅ 策略學習或模仿機制
+# https://chatgpt.com/c/685904cd-9d84-800e-9c28-fc3087d25124
