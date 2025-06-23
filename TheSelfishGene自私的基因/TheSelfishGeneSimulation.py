@@ -179,9 +179,9 @@ sim = EvolutionSimulator(
     payoff_matrix=payoff_matrix,
     mutation_matrix=mutation_matrix,
     interaction_random_matrix=interaction_random_matrix,
-    population_size=2000,
+    population_size=10000,
     pairing_num=100,
-    generations=30
+    generations=20
 )
 
 sim.initialize_population(initial_distribution)
