@@ -117,7 +117,7 @@ class EvolutionSimulator:
             
     
 
-    def plot_fitness_distribution(self, fitnesses, strategies, gen, num_bins=20):
+    def plot_fitness_distribution(self, fitnesses, strategies, gen, num_bins=40):
         # 分箱（quantization）
         bins = np.linspace(fitnesses.min(), fitnesses.max() + 1e-6, num_bins + 1)
         bin_indices = np.digitize(fitnesses, bins) - 1  # 0-based
@@ -186,22 +186,12 @@ class EvolutionSimulator:
 
 
 
-# ====== Main ======
-# ====== Parameters ======
+# ====== Main Function ======
+
+# === Interaction Parameters ===
 R = 50 # reward
 I = -100 # injury
 C = -10 # cost
-
-population_init = 5000
-population_cap = 10000
-logistic_r = 0.1
-
-pairing_num = 100 # 用於固定互動次數
-attack_rate = 0.0001
-handling_time = 0.01
-fix_pairing_num = False
-
-generations = 40
 payoff_matrix = np.array([  # payoff_matrix[i][j] = [i 得分, j 得分]
     [[R, I], [R, 0], [R, I], [R, 0]],  # Hawk random: 0, 2
     [[0, R], [R+C, C], [R+C, C], [0, R]],  # Dove random: 1, 2
@@ -214,13 +204,25 @@ interaction_random_matrix = np.array([
     [1, 1, 1, 0],
     [0, 0, 0, 1]
 ])
+# === Population Parameters ===
+population_init = 5000
+population_cap = 10000
+logistic_r = 0.1
+initial_distribution = np.array([0.0, 0.0, 0.0, 1.0]) 
+# === Pairing Parameters ===
+pairing_num = 100 # 用於固定互動次數
+attack_rate = 0.0001
+handling_time = 0.01
+fix_pairing_num = False
+# === Generations Parameters ===
+generations = 40
 mutation_matrix = np.array([  # mutation_matrix[i][j] = i 策略突變成 j 的機率
     [0.95, 0.01, 0.02, 0.02],
     [0.01, 0.95, 0.02, 0.02],
     [0.02, 0.02, 0.94, 0.02],
     [0.02, 0.02, 0.02, 0.94]
 ])
-initial_distribution = np.array([0.0, 1.0, 0.0, 0.0])  # 初始族群
+
 
 # ====== Simulation ======
 sim = EvolutionSimulator(
@@ -237,7 +239,7 @@ sim = EvolutionSimulator(
     fix_pairing_num=fix_pairing_num
 )
 sim.initialize_population(initial_distribution)
-sim.history_ratio.append(initial_distribution) 
+sim.history_ratio.append(initial_distribution)
 sim.history_num.append(initial_distribution * population_init)
 sim.run()
 sim.plot_evolution()
